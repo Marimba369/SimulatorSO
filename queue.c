@@ -164,6 +164,9 @@ int removeNodeByData(Queue *queue, void *data) {
     return 0; // Not found
 }
 
+/*
+    test function
+*/
 void printElement(Queue *queue)
 {
     int *data;

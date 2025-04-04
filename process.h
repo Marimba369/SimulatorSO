@@ -7,21 +7,21 @@
 
 #include "queue.h"
 
-typedef enum { INVALID_NUMEBER,  SUCESS } Signal;
-typedef enum { READY, RUN } Status;
+typedef enum { INVALID_NUMBER,  SUCESS } Signal;
+typedef enum { NEW, READY, RUNNING, BLOCKED, EXIT } Status;
 
 typedef struct{
+    int pid;
     int data[COLUN];
     int point;
-    int pid;
+    int timeEnqueue;
     Status status;
 } Process;
 
 
-Signal insertDataProcess(Process process[LEN], int programs[][COLUN]);
+Signal init(Process *process, int programs[]);
 void error_code(Signal flag);
-void printProcess(Process process[]);
-void insertProcess(Queue *queue, Process *process, int len);
+void printProcess(Process *process);
 
 
 #endif

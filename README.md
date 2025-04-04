@@ -1,6 +1,6 @@
 # Simulador de Sistema Operativo
 
-this repository shows some algorithm recursive, i train memory to turn a call more easy
+Este repositorio mostra a simulação de processos dentro de uma sistema operativo
 
 ## 🚀 Começando
 
@@ -11,7 +11,7 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 De que coisas você precisa para instalar o software e como instalá-lo?
 
 ```
-gcc
+gcc ou qual outro compilador de C
 ```
 
 ### 🔧 Instalação

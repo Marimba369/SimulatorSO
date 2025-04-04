@@ -1,24 +1,22 @@
 #include "process.h"
 #include <stdio.h>
 #include "queue.h"
-
+#include<string.h>
 
 /*
 
 */
-Signal insertDataProcess(Process process[LEN], int programs[][COLUN])
+Signal init(Process *process, int programs[])
 {
     if (LEN < COLUN || LEN > LINE) 
-        return INVALID_NUMEBER;
+        return INVALID_NUMBER;
 
-    for (int i = 0; i < LEN; i++)
-    {
-        memcpy(process[i].data, programs[i], COLUN * sizeof(int)); 
-        process[i].point = 0;
-        process[i].pid = i + 1; 
-        process[i].status = READY;
-    }
-
+    memcpy(process->data, programs, COLUN * sizeof(int)); 
+    process->point = 0;
+    process->pid = 1; 
+    process->timeEnqueue = 0;
+    process->status = NEW;
+        
     return SUCESS;
 }
 
@@ -26,25 +24,7 @@ Signal insertDataProcess(Process process[LEN], int programs[][COLUN])
 /*
 
 */
-void error_code(Signal flag)
-{
-    switch ( flag )
-    {
-        case INVALID_NUMEBER:
-            printf(".....");
-            break;
-        case SUCESS:
-            printf(" ");
-            break;
-        default:
-            break;
-    }
-}
-
-/*
-
-*/
-void printProcess(Process process[])
+void printProcess(Process *process)
 {
     for(int i = 0; i < LEN; i++)
     {
@@ -56,11 +36,21 @@ void printProcess(Process process[])
 }
 
 
+
 /*
 
 */
-void insertProcess(Queue *queue, Process *process, int len)
+void error_code(Signal flag)
 {
-    for(int i = 0; i < len; i++)
-        enqueue(queue, process + i);
+    switch ( flag )
+    {
+        case INVALID_NUMBER:
+            printf(".....");
+            break;
+        case SUCESS:
+            printf(" ");
+            break;
+        default:
+            break;
+    }
 }
