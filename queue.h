@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include <stdlib.h>
+#include "process.h"
 
 // Queue Node structure
 typedef struct QueueNode {
@@ -27,8 +28,5 @@ void deleteQueue(Queue *queue);
 void* getQueueNodeAt(Queue *queue, size_t index);
 int removeNodeAt(Queue *queue, size_t index);
 int removeNodeByData(Queue *queue, void *data);
-
-// Auxiliary function, this version no is the best way to working with queue
-void printElement(Queue *queue);
 
 #endif /* QUEUE_H */

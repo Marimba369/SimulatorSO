@@ -164,16 +164,4 @@ int removeNodeByData(Queue *queue, void *data) {
     return 0; // Not found
 }
 
-/*
-    test function
-*/
-void printElement(Queue *queue)
-{
-    int *data;
 
-    for( QueueNode *node = queue->front; node != NULL; node = node->next )
-    {
-        data = (int *)node->data;
-        printf(" %d ", data[0]);
-    }
-}
