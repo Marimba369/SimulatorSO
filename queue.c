@@ -133,9 +133,9 @@ int removeNodeAt(Queue *queue, size_t index) {
  * Removes a node from the queue by its data pointer.
  * Returns 1 if the node was found and removed, 0 otherwise.
  */
-int removeNodeByData(Queue *queue, void *data) {
+void *removeNodeByData(Queue *queue, void *data) {
     if (isEmpty(queue) || data == NULL) {
-        return 0;
+        return NULL;
     }
 
     QueueNode *current = queue->front;
@@ -153,15 +153,16 @@ int removeNodeByData(Queue *queue, void *data) {
                 queue->rear = prev;
             }
 
+            void *data = current->data;
             free(current);
             queue->size--;
-            return 1;  // Success
+            return data;  // Success
         }
         prev = current;
         current = current->next;
     }
 
-    return 0; // Not found
+    return NULL; // Not found
 }
 
 

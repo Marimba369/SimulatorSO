@@ -42,13 +42,13 @@ Process *forks(int context[], int *pid)
     }
 
     memcpy(process->context, context, COLUN * sizeof(int)); 
-    process->index = 0;
-    process->pid = pid; 
-    process->timeEnqueue = 1;
-    process->timeExec = 0;
-    process->status = NEW;
+    process->programCounter = 0; // pc of the process
+    process->pid = *pid; // pid of the process
+    process->timeEnqueue = 0; // time with process stay in any queue, this is generics
+    process->timeCpu = 1; // this time increment while process stay in the cpu
+    process->status = NEW; 
 
-    pid++;
+    (*pid) += 1; // pid global increment
     return process;
 }
 
@@ -84,5 +84,25 @@ void system_call(char call)
     
     default:
         break;
+    }
+}
+
+/*
+
+*/
+char *getStatus(Status status)
+{
+    switch (status)
+    {
+        case NEW:
+            return "NEW";
+        case BLOCKED:
+            return "BLOCKED";
+        case READY:
+            return "RETURN";
+        case RUNNING:
+            return "RUNNING";
+        case EXIT:
+            return "EXIT";
     }
 }

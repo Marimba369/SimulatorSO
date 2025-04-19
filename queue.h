@@ -27,6 +27,6 @@ void deleteQueue(Queue *queue);
 
 void* getQueueNodeAt(Queue *queue, size_t index);
 int removeNodeAt(Queue *queue, size_t index);
-int removeNodeByData(Queue *queue, void *data);
+void *removeNodeByData(Queue *queue, void *data);
 
 #endif /* QUEUE_H */
