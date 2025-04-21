@@ -5,12 +5,13 @@
 
 #define QUANTUM 3
 #define TIME_LIMITE 100
-#define NUMBER_PROCESS 20
+#define NUMBER_PROCESS 5
 
 int time = 1;
 
 void scheduler(Queue *QueueDestiny, Queue *Ready, Status status);
 Process *findByTime(Queue *Queue);
+Process *findByPID(Queue *Queue, int pid);
 
 /*
     Do: search for element by time 
@@ -18,18 +19,31 @@ Process *findByTime(Queue *Queue);
 */
 Process *findByTime(Queue *Queue)
 {
-    int size = Queue->size;
-    if( !isEmpty(Queue) )
+    if( isEmpty(Queue) )
         return NULL;
-
-    for( int i = size; i > 0; i-- )
+    for( QueueNode *node = Queue->front; node != NULL; node = node->next )
     {
-        Process *auxProcess = getQueueNodeAt(Queue, i);
-
-        if( auxProcess->timeEnqueue == time )
-            return auxProcess; // find element
+        Process *process = (Process *)node->data;
+        if( process->timeEnqueue == time )
+            return process; // find element
     }
     return NULL; // no element with time out
+}
+
+/*
+    
+*/
+Process *findByPID(Queue *Queue, int pid)
+{    
+    if( isEmpty(Queue) )
+        return NULL;
+    for( QueueNode *node = Queue->front; node != NULL; node = node->next )
+    {
+        Process *process = (Process *)node->data;
+        if( process->pid == pid )
+            return process; // find element
+    }
+        return NULL; // no element with time out
 }
 
 /*
@@ -71,37 +85,15 @@ void dispatcher(Process *processor, Queue *QueueDestiny, Queue *Ready, Status st
     processor = process;
 }   
 
-Process *findByPID(Queue *Queue, int pid)
-{    
-    int size = Queue->size;
-    if( !isEmpty(Queue) )
-        return NULL;
-    for( int i = size; i > 0; i-- )
-    {
-        Process *auxProcess = getQueueNodeAt(Queue, i);
-    
-        if( auxProcess->pid == pid )
-            return auxProcess; // find element
-    }
-        return NULL; // no element with time out
-}
-
 /*
 */
 void printProcess(Process *processor, Queue *New, Queue *Blocked, Queue *Ready, Queue *Exit)
 {
-    // Cabeçalho da tabela
-    printf("%-10s", "time inst");
-    for (int i = 1; i <= NUMBER_PROCESS; i++) {
-        printf("%-15s", "proc");
-    }
-    printf("\n");
-
-    // Dados da tabela
-    for (int i = 1; i <= NUMBER_PROCESS; i++) {
-        printf("%-10d", time); // Coluna de tempo
+    printf("%-10d", time); 
+    for (int i = 1; i <= NUMBER_PROCESS; i++) 
+    {
         if (processor != NULL && processor->pid == i) {
-            printf("%-15s", "RUNNING");
+            printf("%-15s", getStatus(processor->status));
         } else {
             Process *process = findByPID(Blocked, i);
             if (process != NULL) {
@@ -114,9 +106,8 @@ void printProcess(Process *processor, Queue *New, Queue *Blocked, Queue *Ready, 
                 printf("%-15s", getStatus(process->status));
             } 
         }
-        printf("\n");
     }
-
+    printf("\n");
 }
 
 /*
@@ -145,23 +136,30 @@ int main()
     Process *process2 = forks(programs[2], &globalPid);
     Process *process3 = forks(programs[3], &globalPid);
 
-
+    
     enqueue(NewQueue, process);
     enqueue(NewQueue, process1);
     enqueue(NewQueue, process2);
     enqueue(NewQueue, process3);
 
-    
     /*
     for( QueueNode *node = NewQueue->front; node != NULL; node = node->next )
     {
         Process *process = (Process *)node->data;
-        printf("node: %d ", process->pid);
+        printf("node: %s ", getStatus(process->status));
     }
-
+    
     printf("\n");
     removeNodeByData(NewQueue, process1);
     */
+
+    // Cabeçalho da tabela
+    printf("%-10s", "time inst");
+    for (int i = 1; i <= NUMBER_PROCESS; i++) 
+    {
+        printf("%-15s", "proc");
+    }
+    printf("\n");
 
     while( time <= TIME_LIMITE )
     {   

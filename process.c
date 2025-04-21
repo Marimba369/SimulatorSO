@@ -88,18 +88,18 @@ void system_call(char call)
 }
 
 /*
-
 */
-char *getStatus(Status status)
-{
-    switch (status)
+
+char *getStatus(Status status) 
+{    
+    switch (status) 
     {
         case NEW:
             return "NEW";
         case BLOCKED:
             return "BLOCKED";
         case READY:
-            return "RETURN";
+            return "READY";
         case RUNNING:
             return "RUNNING";
         case EXIT:
