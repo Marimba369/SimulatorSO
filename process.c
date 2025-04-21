@@ -31,7 +31,7 @@ void error_code(Signal flag)
 /*
     create process, this is a call 
 */
-Process *forks(int context[], int *pid)
+Process *forks(int context[], int *pid, int time)
 {
     Process *process = (Process *)malloc(sizeof(Process));
 
@@ -44,7 +44,7 @@ Process *forks(int context[], int *pid)
     memcpy(process->context, context, COLUN * sizeof(int)); 
     process->programCounter = 0; // pc of the process
     process->pid = *pid; // pid of the process
-    process->timeEnqueue = 0; // time with process stay in any queue, this is generics
+    process->timeEnqueue = time + 2; // time with process stay in any queue, this is generics
     process->timeCpu = 1; // this time increment while process stay in the cpu
     process->status = NEW; 
 
@@ -101,7 +101,7 @@ char *getStatus(Status status)
         case READY:
             return "READY";
         case RUNNING:
-            return "RUNNING";
+            return "RUN";
         case EXIT:
             return "EXIT";
     }

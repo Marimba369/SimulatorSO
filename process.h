@@ -20,7 +20,7 @@ typedef struct{
 } Process;    
 
 
-Process *forks(int programs[], int *pid);
+Process *forks(int programs[], int *pid, int time);
 void error_code(Signal flag);
 void kill(Process *process);
 char *getStatus(Status status);

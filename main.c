@@ -7,7 +7,7 @@
 #define TIME_LIMITE 100
 #define NUMBER_PROCESS 5
 
-int time = 1;
+int time = 0;
 
 void scheduler(Queue *QueueDestiny, Queue *Ready, Status status);
 Process *findByTime(Queue *Queue);
@@ -63,7 +63,6 @@ void scheduler(Queue *QueueDestiny, Queue *Ready, Status status)
         process = removeNodeByData(QueueDestiny, process); 
     }
     process->status = status;
-    //process->timeEnqueue = 1;
     enqueue(Ready, process);
 
     scheduler(QueueDestiny, Ready, status);
@@ -75,12 +74,30 @@ void scheduler(Queue *QueueDestiny, Queue *Ready, Status status)
 void dispatcher(Process *processor, Queue *QueueDestiny, Queue *Ready, Status status)
 {
     processor->status = status;
-    processor->timeCpu = 1;
-    //processor->timeEnqueue = 1;
-    //processor->programCounter += 1;
+    processor->timeCpu = 0;
+    
+    if( status == BLOCKED )
+    {
+        int pc = processor->programCounter;
+        int timeEnqueue = (processor->context[pc] * -1) + time;
+
+        processor->timeEnqueue = timeEnqueue;
+    }
+    else if( status == EXIT )
+    {
+        processor->timeEnqueue = time + 1;
+        processor->programCounter -= 1;
+
+    }
+
+    processor->programCounter += 1;
     enqueue(QueueDestiny, processor);
 
     Process *process = (Process *)dequeue(Ready);
+    
+    if( process == NULL )
+        return;
+    
     process->status = RUNNING;
     processor = process;
 }   
@@ -117,9 +134,9 @@ int main()
 {
     int globalPid = 1, nProcessKill = 0;
 
-    int programs[LINE][COLUN] = { {3, 4, 2},
-    {1, 2, 1},
-    {2, 4, 5},
+    int programs[LINE][COLUN] = { {3, 201, 4},
+    {1, 203, 1},
+    {2, 201, 5},
     {0, 0, 10},
     {0, 0, 0} };
 
@@ -131,27 +148,8 @@ int main()
     Queue *ReadyQueue = createQueue();
     Queue *ExitQueue = createQueue();
 
-    process = forks(programs[0], &globalPid);
-    Process *process1 = forks(programs[1], &globalPid);
-    Process *process2 = forks(programs[2], &globalPid);
-    Process *process3 = forks(programs[3], &globalPid);
-
-    
+    process = forks(programs[0], &globalPid, time);
     enqueue(NewQueue, process);
-    enqueue(NewQueue, process1);
-    enqueue(NewQueue, process2);
-    enqueue(NewQueue, process3);
-
-    /*
-    for( QueueNode *node = NewQueue->front; node != NULL; node = node->next )
-    {
-        Process *process = (Process *)node->data;
-        printf("node: %s ", getStatus(process->status));
-    }
-    
-    printf("\n");
-    removeNodeByData(NewQueue, process1);
-    */
 
     // Cabeçalho da tabela
     printf("%-10s", "time inst");
@@ -163,9 +161,62 @@ int main()
 
     while( time <= TIME_LIMITE )
     {   
+        time ++;
         printProcess(processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
 
-        time ++;
+        scheduler(NewQueue, ReadyQueue, READY);
+        scheduler(BloquedQueue, ReadyQueue, READY);
+        
+        if( processor == NULL )
+        {
+            Process *auxProcess = (Process *)dequeue(ReadyQueue);
+            
+            if ( auxProcess != NULL )
+            {
+                auxProcess->status = RUNNING;
+                processor = auxProcess;
+            }
+        }
+        else
+        {
+            //time-out
+            if( processor->timeCpu == QUANTUM )
+            {
+                dispatcher(processor, ReadyQueue, ReadyQueue, READY);
+            }
+            else
+            {
+                int index = processor->programCounter; 
+                int pc = processor->context[index];
+
+                // JUMP
+                if( pc > 100 && pc < 200 )
+                {
+                    int jump = pc % 100;
+                    processor->programCounter -= jump;
+                }
+                else if ( pc > 200 && pc < 300 ) //EXEC
+                {
+                    int index = pc % 100;
+                    Process *forkProcess = forks(programs[index], &globalPid, time);
+                    enqueue(ReadyQueue, forkProcess);
+                }
+                else if ( pc < 0 ) //IO
+                {
+                    dispatcher(processor, BloquedQueue, ReadyQueue, BLOCKED);
+                }
+                else if( pc == 0 ) //HALT
+                {
+                    enqueue(ExitQueue, processor);
+                    processor->status = EXIT;
+                }
+                else
+                    processor->programCounter += 1;
+            }
+
+        }
+
+    
     }   
 
     return 0;
