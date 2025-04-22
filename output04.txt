@@ -1,0 +1,101 @@
+time inst proc1          proc2          proc3          proc4          proc5          proc6          proc7          proc8          proc9          proc10         proc11         proc12         proc13         proc14         proc15         proc16         proc17         proc18         proc19         proc20         
+1         NEW            
+2         NEW            
+3         RUN            
+4         RUN            NEW            
+5         RUN            NEW            NEW            
+6         READY          READY          NEW            
+7         READY          RUN            READY          
+8         READY          RUN            READY          
+9         READY          EXIT           READY          
+10        RUN            READY          
+11        RUN            READY          NEW            
+12        RUN            READY          NEW            
+13        READY          READY          READY          
+14        READY          RUN            READY          
+15        READY          BLOCKED        READY          
+16        READY          BLOCKED        RUN            
+17        READY          BLOCKED        RUN            NEW            
+18        READY          READY          RUN            NEW            NEW            
+19        READY          READY          READY          READY          NEW            
+20        RUN            READY          READY          READY          READY          
+21        RUN            READY          READY          READY          READY          NEW            
+22        RUN            READY          READY          READY          READY          NEW            NEW            
+23        READY          READY          READY          READY          READY          READY          NEW            
+24        READY          RUN            READY          READY          READY          READY          READY          
+25        READY          BLOCKED        READY          READY          READY          READY          READY          
+26        READY          BLOCKED        READY          RUN            READY          READY          READY          
+27        READY          BLOCKED        READY          RUN            READY          READY          READY          
+28        READY          READY          READY          RUN            READY          READY          READY          
+29        READY          READY          READY          READY          READY          READY          READY          
+30        READY          READY          RUN            READY          READY          READY          READY          
+31        READY          READY          RUN            READY          READY          READY          READY          
+32        READY          READY          RUN            READY          READY          READY          READY          
+33        READY          READY          READY          READY          READY          READY          READY          
+34        READY          READY          READY          READY          RUN            READY          READY          
+35        READY          READY          READY          READY          BLOCKED        READY          READY          
+36        READY          READY          READY          READY          BLOCKED        RUN            READY          
+37        READY          READY          READY          READY          BLOCKED        RUN            READY          
+38        READY          READY          READY          READY          BLOCKED        RUN            READY          
+39        READY          READY          READY          READY          BLOCKED        READY          READY          
+40        RUN            READY          READY          READY          BLOCKED        READY          READY          
+41        RUN            READY          READY          READY          BLOCKED        READY          READY          
+42        RUN            READY          READY          READY          BLOCKED        READY          READY          NEW            
+43        READY          READY          READY          READY          BLOCKED        READY          READY          NEW            
+44        READY          READY          READY          READY          BLOCKED        READY          RUN            READY          
+45        READY          READY          READY          READY          BLOCKED        READY          EXIT           READY          
+46        READY          RUN            READY          READY          BLOCKED        READY          READY          
+47        READY          BLOCKED        READY          READY          BLOCKED        READY          READY          
+48        READY          BLOCKED        READY          RUN            BLOCKED        READY          READY          
+49        READY          BLOCKED        READY          RUN            BLOCKED        READY          READY          
+50        READY          READY          READY          RUN            BLOCKED        READY          READY          
+51        READY          READY          READY          READY          BLOCKED        READY          READY          
+52        READY          READY          RUN            READY          BLOCKED        READY          READY          
+53        READY          READY          RUN            READY          BLOCKED        READY          READY          NEW            
+54        READY          READY          RUN            READY          BLOCKED        READY          READY          NEW            NEW            
+55        READY          READY          READY          READY          BLOCKED        READY          READY          READY          NEW            
+56        READY          READY          READY          READY          BLOCKED        RUN            READY          READY          READY          
+57        READY          READY          READY          READY          BLOCKED        RUN            READY          READY          READY          
+58        READY          READY          READY          READY          BLOCKED        RUN            READY          READY          READY          
+59        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+60        RUN            READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+61        RUN            READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+62        RUN            READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+63        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+64        READY          READY          READY          READY          BLOCKED        READY          RUN            READY          READY          
+65        READY          READY          READY          READY          BLOCKED        READY          RUN            READY          READY          
+66        READY          READY          READY          READY          BLOCKED        READY          RUN            READY          READY          
+67        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+68        READY          RUN            READY          READY          BLOCKED        READY          READY          READY          READY          
+69        READY          BLOCKED        READY          READY          BLOCKED        READY          READY          READY          READY          
+70        READY          BLOCKED        READY          RUN            BLOCKED        READY          READY          READY          READY          
+71        READY          BLOCKED        READY          RUN            BLOCKED        READY          READY          READY          READY          
+72        READY          READY          READY          RUN            BLOCKED        READY          READY          READY          READY          
+73        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+74        READY          READY          READY          READY          BLOCKED        READY          READY          RUN            READY          
+75        READY          READY          READY          READY          BLOCKED        READY          READY          RUN            READY          
+76        READY          READY          READY          READY          BLOCKED        READY          READY          RUN            READY          
+77        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          
+78        READY          READY          RUN            READY          BLOCKED        READY          READY          READY          READY          
+79        READY          READY          RUN            READY          BLOCKED        READY          READY          READY          READY          
+80        READY          READY          RUN            READY          BLOCKED        READY          READY          READY          READY          NEW            
+81        READY          READY          READY          READY          BLOCKED        READY          READY          READY          READY          NEW            
+82        READY          READY          READY          READY          BLOCKED        READY          READY          READY          RUN            READY          
+83        READY          READY          READY          READY          BLOCKED        READY          READY          READY          EXIT           READY          
+84        READY          READY          READY          READY          BLOCKED        RUN            READY          READY          READY          
+85        READY          READY          READY          READY          READY          RUN            READY          READY          READY          
+86        READY          READY          READY          READY          READY          RUN            READY          READY          READY          
+87        READY          READY          READY          READY          READY          READY          READY          READY          READY          
+88        RUN            READY          READY          READY          READY          READY          READY          READY          READY          
+89        RUN            READY          READY          READY          READY          READY          READY          READY          READY          NEW            
+90        RUN            READY          READY          READY          READY          READY          READY          READY          READY          NEW            
+91        READY          READY          READY          READY          READY          READY          READY          READY          READY          READY          
+92        READY          READY          READY          READY          READY          READY          RUN            READY          READY          READY          
+93        READY          READY          READY          READY          READY          READY          RUN            READY          READY          READY          
+94        READY          READY          READY          READY          READY          READY          RUN            READY          READY          READY          
+95        READY          READY          READY          READY          READY          READY          READY          READY          READY          READY          
+96        READY          RUN            READY          READY          READY          READY          READY          READY          READY          READY          
+97        READY          BLOCKED        READY          READY          READY          READY          READY          READY          READY          READY          
+98        READY          BLOCKED        READY          RUN            READY          READY          READY          READY          READY          READY          
+99        READY          BLOCKED        READY          RUN            READY          READY          READY          READY          READY          READY          
+100       READY          READY          READY          RUN            READY          READY          READY          READY          READY          READY          NEW            

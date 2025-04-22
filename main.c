@@ -5,7 +5,7 @@
 
 #define QUANTUM 3
 #define TIME_LIMITE 100
-#define NUMBER_PROCESS 5
+#define NUMBER_PROCESS 20
 #define MAX_PROCESS 20
 
 int time = 0;
@@ -138,13 +138,18 @@ int main()
     {0, 0, 10},
     {0, 0, 0} };*/
 
-    int programs[LINE][COLUN] = { 
-        { 203,    4,     -2 },
-        {   1,   -3,   202 },
-        {  -2,  102,     5 },
-        {   1,    0,    10 },
-        {   0,    0,     0 }};
-
+    int programs[LINE][COLUN] =  { 
+        {  202,    0, -471, -149,  -73,  350,  499,  616,  -85,  611,  444, -484, -228, -265,  572, -138, -169,  442, -380,  213 },
+        {  201,    0, -280,  428, -323,  -85,  658,  355, -457, -158,   39,   18,  777,  732,  719, -445,  209, -451,    0,  -93 },
+        {  102,    0,    6,   84,  341,    0,  443, -221,  623, -157,  499, -256,   51,  -94, -187, -263, -362, -309,    0, -159 },
+        {    4,    0,  666,  610, -192,    0,    0,  793,  668, -451,    0,  368,    8,  752,  455, -487, -258,  780,    0,  361 },
+        {    0,    0,   10,  748,  441,    0,    0,  -85,  529,  634,    0, -291,  672, -336,  728,    0,  792,  447,    0,  214 },
+        {    0,    0,    0,  -84,  -59,    0,    0, -100, -163,  519,    0,  625, -152, -305,  721,    0,    0,  382,    0, -136 },
+        {    0,    0,    0, -413,  479,    0,    0,  517,  -63,  -48,    0, -385, -359,    0,  517,    0,    0,  636,    0, -488 },
+        {    0,    0,    0,  539,  737,    0,    0,  -79,    0,  570,    0,  553,  212,    0,    0,    0,    0,    0,    0,  772 },
+        {    0,    0,    0, -253,  -19,    0,    0, -318,    0,  347,    0,    0,   87,    0,    0,    0,    0,    0,    0, -257 },
+        {    0,    0,    0,  628,  326,    0,    0,    0,    0,  420,    0,    0,  393,    0,    0,    0,    0,    0,    0,   -4 },
+        {    0,    0,    0, -101,  -46,    0,    0,    0,    0, -319,    0,    0,  534,    0,    0,    0,    0,    0,    0, -175 }};
     Process *process;
     Process *processor = NULL;
   
@@ -166,7 +171,8 @@ int main()
     }
     printf("\n");
 
-    while (time < TIME_LIMITE) {
+    while (time < TIME_LIMITE) 
+    {
         time++;
         printProcess(processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
 
@@ -174,29 +180,35 @@ int main()
         scheduler(NewQueue, ReadyQueue, READY);
         scheduler(ExitQueue, ReadyQueue, EXIT);
 
-        if (processor == NULL) {
+        if (processor == NULL) 
+        {
             Process *auxProcess = (Process *)dequeue(ReadyQueue);
-            if (auxProcess != NULL) {
+            if (auxProcess != NULL) 
+            {
                 auxProcess->status = RUNNING;
                 processor = auxProcess;
-                processor->timeCpu = 1;
+                processor->timeCpu = 2;
             }
         } else {
             int index = processor->programCounter;
             int pc = processor->context[index];
 
-            if (processor->timeCpu <= QUANTUM) {
-                if (processor->programCounter > 2) {
+            if (processor->timeCpu <= QUANTUM) 
+            {
+                if (processor->programCounter > COLUN) 
+                {
                     dispatcher(processor, ExitQueue, EXIT);
                     processor = NULL;
                     continue;
                 } else {
-                    if (pc > 100 && pc < 200) {
+                    if (pc > 100 && pc < 200) 
+                    {
                         int jump = pc % 100;
                         processor->programCounter -= jump;
                     } else if (pc > 200 && pc < 300) {
                         int idx = pc % 100;
-                        if (globalPid <= MAX_PROCESS) {
+                        if (globalPid <= MAX_PROCESS) 
+                        {
                             Process *forkProcess = forks(programs[idx], &globalPid, time);
                             if (forkProcess != NULL) enqueue(NewQueue, forkProcess);
                         }
@@ -209,7 +221,8 @@ int main()
                     }
                 }
             } else {
-                if (processor->programCounter > 2) {
+                if (processor->programCounter > COLUN) 
+                {
                     dispatcher(processor, ExitQueue, EXIT);
                     processor = NULL;
                     continue;
@@ -219,7 +232,8 @@ int main()
                 }
             }
 
-            if (processor != NULL) {
+            if (processor != NULL) 
+            {
                 processor->programCounter += 1;
                 processor->timeCpu += 1;
             }

@@ -3,7 +3,7 @@
 
 #define LINE 5
 #define COLUN 20
-#define LEN 5
+#define LEN 11
 
 #include "queue.h"
 
