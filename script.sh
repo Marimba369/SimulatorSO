@@ -1,4 +1,4 @@
 #!bin/bash
 
-gcc $1
+gcc main.c queue.c process.c 
 ./a.out
