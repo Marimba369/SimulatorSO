@@ -27,7 +27,7 @@ Process *findByTime(Queue *Queue)
         if( process->timeEnqueue == time )
             return process; // find element
     }
-    return NULL; // no element with time out
+    return NULL; // no element with time-out
 }
 
 /*
@@ -43,7 +43,7 @@ Process *findByPID(Queue *Queue, int pid)
         if( process->pid == pid )
             return process; // find element
     }
-        return NULL; // no element with time out
+        return NULL; // no element with time-out
 }
 
 /*
@@ -51,16 +51,23 @@ Process *findByPID(Queue *Queue, int pid)
 */
 void scheduler(Queue *QueueDestiny, Queue *Ready, Status status)
 {
-    Process *process = findByTime(QueueDestiny);
-    if( process == NULL )
+    Process *process = findByTime(QueueDestiny); 
+    if( process == NULL ) //stop recursive call
         return;
-    if( process->status != BLOCKED )
+    if( process->status == NEW )
     {
         process = (Process *)dequeue(QueueDestiny);
     }
-    else
+    else if ( process->status == BLOCKED )
     {
-        process = removeNodeByData(QueueDestiny, process); 
+        process = removeNodeByData(QueueDestiny, process);  // remove in whatover position
+    }
+    else if ( process->status == EXIT )
+    {
+        Process *aux = dequeue(QueueDestiny);
+        killProcess(aux); // dump the process
+        scheduler(QueueDestiny, Ready, status);  //repeate while exists any process
+        return;
     }
     process->status = status;
     enqueue(Ready, process);
@@ -71,7 +78,7 @@ void scheduler(Queue *QueueDestiny, Queue *Ready, Status status)
 /*
     dispatcher
 */
-void dispatcher(Process *processor, Queue *QueueDestiny, Queue *Ready, Status status)
+void dispatcher(Process *processor, Queue *QueueDestiny, Status status)
 {
     processor->status = status;
     processor->timeCpu = 0;
@@ -86,20 +93,9 @@ void dispatcher(Process *processor, Queue *QueueDestiny, Queue *Ready, Status st
     else if( status == EXIT )
     {
         processor->timeEnqueue = time + 1;
-        processor->programCounter -= 1;
-
     }
 
-    processor->programCounter += 1;
     enqueue(QueueDestiny, processor);
-
-    Process *process = (Process *)dequeue(Ready);
-    
-    if( process == NULL )
-        return;
-    
-    process->status = RUNNING;
-    processor = process;
 }   
 
 /*
@@ -134,11 +130,19 @@ int main()
 {
     int globalPid = 1, nProcessKill = 0;
 
-    int programs[LINE][COLUN] = { {3, 201, 4},
-    {1, 203, 1},
+    /*
+    int programs[LINE][COLUN] = { {204, 202, 3},
+    {1, 204, 1},
     {2, 201, 5},
     {0, 0, 10},
-    {0, 0, 0} };
+    {0, 0, 0} };*/
+
+    int programs[LINE][COLUN] = { 
+        { 203,    4,     2 },
+        {   1,   -3,   202 },
+        {  -2,  102,     5 },
+        {   1,    0,    10 },
+        {   0,    0,     0 }};
 
     Process *process;
     Process *processor = NULL;
@@ -159,14 +163,15 @@ int main()
     }
     printf("\n");
 
-    while( time <= TIME_LIMITE )
+    while( time < TIME_LIMITE )
     {   
         time ++;
         printProcess(processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
-
-        scheduler(NewQueue, ReadyQueue, READY);
-        scheduler(BloquedQueue, ReadyQueue, READY);
         
+        scheduler(BloquedQueue, ReadyQueue, READY);
+        scheduler(NewQueue, ReadyQueue, READY);
+        scheduler(ExitQueue, ReadyQueue, EXIT);
+
         if( processor == NULL )
         {
             Process *auxProcess = (Process *)dequeue(ReadyQueue);
@@ -175,6 +180,7 @@ int main()
             {
                 auxProcess->status = RUNNING;
                 processor = auxProcess;
+                processor->timeCpu = 1;
             }
         }
         else
@@ -182,41 +188,52 @@ int main()
             //time-out
             if( processor->timeCpu == QUANTUM )
             {
-                dispatcher(processor, ReadyQueue, ReadyQueue, READY);
+                dispatcher(processor, ReadyQueue, READY);
+                processor = NULL;
             }
             else
             {
-                int index = processor->programCounter; 
-                int pc = processor->context[index];
-
-                // JUMP
-                if( pc > 100 && pc < 200 )
-                {
-                    int jump = pc % 100;
-                    processor->programCounter -= jump;
-                }
-                else if ( pc > 200 && pc < 300 ) //EXEC
-                {
-                    int index = pc % 100;
-                    Process *forkProcess = forks(programs[index], &globalPid, time);
-                    enqueue(ReadyQueue, forkProcess);
-                }
-                else if ( pc < 0 ) //IO
-                {
-                    dispatcher(processor, BloquedQueue, ReadyQueue, BLOCKED);
-                }
-                else if( pc == 0 ) //HALT
-                {
-                    enqueue(ExitQueue, processor);
-                    processor->status = EXIT;
+                if( processor->programCounter > 2 )
+                {    
+                    dispatcher(processor, ExitQueue, EXIT);
+                    processor = NULL;
+                    continue;
                 }
                 else
+                {
+                    int index = processor->programCounter; 
+                    int pc = processor->context[index];
+
+                    if( pc > 100 && pc < 200 )  // JUMP
+                    {
+                        int jump = pc % 100;
+                        processor->programCounter -= jump;
+                    }
+                    else if ( pc > 200 && pc < 300 ) //EXEC
+                    {
+                        int index = pc % 100;
+                        Process *forkProcess = forks(programs[index], &globalPid, time);
+                        enqueue(NewQueue, forkProcess);
+                    }
+                    else if ( pc < 0 ) //IO
+                    {
+                        dispatcher(processor, BloquedQueue, BLOCKED);
+                        processor = NULL;
+                    }
+                    else if( pc == 0 ) //HALT
+                    {
+                        dispatcher(processor, ExitQueue, EXIT);
+                        processor = NULL;
+                    }
+                }
+                if( processor != NULL )
+                {
                     processor->programCounter += 1;
+                    processor->timeCpu += 1;
+                }
             }
-
+                
         }
-
-    
     }   
 
     return 0;

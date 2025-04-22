@@ -55,9 +55,9 @@ Process *forks(int context[], int *pid, int time)
 /*
     kill process, this is a call 
 */
-void kill(Process *process)
+void killProcess(Process *process)
 {
-    if( process->status != EXIT )
+    if( process->status != EXIT || process == NULL )
     {
         error_code(INVALID_CALL);
         return;
@@ -104,5 +104,7 @@ char *getStatus(Status status)
             return "RUN";
         case EXIT:
             return "EXIT";
+        case DUMP:
+            return " ";
     }
 }
