@@ -1,9 +1,9 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#define LINE 5
+#define LINE 11
 #define COLUN 20
-#define LEN 11
+#define LEN 5
 
 #include "queue.h"
 
@@ -16,7 +16,6 @@ typedef struct{
     int programCounter;
     int timeEnqueue; 
     int timeCpu;
-    //int flag;
     Status status;
 } Process;    
 
