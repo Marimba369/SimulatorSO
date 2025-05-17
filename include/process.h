@@ -5,10 +5,8 @@
 #define COLUN 20
 #define LEN 5
 
-#include "queue.h"
-
 typedef enum { INVALID_NUMBER,  SUCESS, NO_SPACE, INVALID_CALL } Signal;
-typedef enum { NEW, READY, RUNNING, BLOCKED, EXIT, DUMP } Status;
+typedef enum { NEW, READY, RUNNING, BLOCKED, EXIT } Status;
 
 typedef struct{
     int pid;

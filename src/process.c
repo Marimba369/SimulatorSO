@@ -1,8 +1,7 @@
 #include "process.h"
 #include <stdio.h>
-#include "queue.h"
 #include <string.h>
-
+#include <stdlib.h>
 /*
     message and error status 
 */
@@ -67,23 +66,17 @@ void killProcess(Process *process)
 } 
 
 /*
-    print all process
-*/
-//void print_process(Queue *New, Queue *Bloqued, Queue *Ready, Process *processor)
-
-
-/*
     if necessary other service call the system
 */
 void system_call(char call)
 {
     switch (call)
     {
-    case 'f':
-        break;
-    
-    default:
-        break;
+        case 'f':
+            break;
+        
+        default:
+            break;
     }
 }
 
@@ -104,7 +97,7 @@ char *getStatus(Status status)
             return "RUN";
         case EXIT:
             return "EXIT";
-        case DUMP:
-            return " ";
+        default:
+            return "UNKNOWN";
     }
 }

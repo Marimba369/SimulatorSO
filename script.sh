@@ -1,5 +1,26 @@
 #!/bin/bash
 
-gcc main.c queue.c process.c 
-./a.out
-rm -f a.out
+# Parar no primeiro erro
+set -e
+
+# Pasta de saída
+BIN_DIR="bin"
+EXECUTAVEL="simulador"
+
+# Criar a pasta bin se não existir
+mkdir -p $BIN_DIR
+
+# Compilar os ficheiros C
+echo "🔨 Compilando o projeto..."
+gcc -Wall -Wextra -std=c11 -o "$BIN_DIR/$EXECUTAVEL" \
+    src/ExecProcess.c \
+    src/queue.c \
+    src/process.c \
+    -Iinclude
+
+# Mensagem de sucesso
+echo "✅ Compilação bem-sucedida."
+
+# Executar o programa
+echo "🚀 Executando o programa..."
+"./$BIN_DIR/$EXECUTAVEL"
