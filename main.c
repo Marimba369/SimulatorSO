@@ -15,7 +15,7 @@ Process *findByTime(Queue *Queue);
 Process *findByPID(Queue *Queue, int pid);
 
 /*
-    Do: search for element by time 
+    Do: search for exlement by time 
     return: element address if exists else null 
 */
 Process *findByTime(Queue *Queue)
@@ -61,7 +61,7 @@ void scheduler(Queue *QueueDestiny, Queue *Ready, Status status)
     }
     else if ( process->status == BLOCKED )
     {
-        process = removeNodeByData(QueueDestiny, process);  // remove in whatover position
+        process = removeNodeByData(QueueDestiny, process);  // remove in whatever position
     }
     else if ( process->status == EXIT )
     {
@@ -100,7 +100,7 @@ void dispatcher(Process *processor, Queue *QueueDestiny, Status status)
 }   
 
 /*
-*/
+
 void printProcess(Process *processor, Queue *New, Queue *Blocked, Queue *Ready, Queue *Exit)
 {
     printf("%-10d", time); 
@@ -123,6 +123,32 @@ void printProcess(Process *processor, Queue *New, Queue *Blocked, Queue *Ready, 
     }
     printf("\n");
 }
+*/
+
+void printProcess(FILE *file, Process *processor, Queue *New, Queue *Blocked, Queue *Ready, Queue *Exit)
+{
+    fprintf(file, "%-10d", time); 
+    for (int i = 1; i <= NUMBER_PROCESS; i++) 
+    {
+        if (processor != NULL && processor->pid == i) {
+            fprintf(file, "%-15s", getStatus(processor->status));
+        } else {
+            Process *process = findByPID(Blocked, i);
+            if (process != NULL) {
+                fprintf(file, "%-15s", getStatus(process->status));
+            } else if ((process = findByPID(Ready, i)) != NULL) {
+                fprintf(file, "%-15s", getStatus(process->status));
+            } else if ((process = findByPID(New, i)) != NULL) {
+                fprintf(file, "%-15s", getStatus(process->status));
+            } else if ((process = findByPID(Exit, i)) != NULL) {
+                fprintf(file, "%-15s", getStatus(process->status));
+            } 
+        }
+    }
+    fprintf(file, "\n");
+}
+
+
 
 /*
     main
@@ -130,6 +156,12 @@ void printProcess(Process *processor, Queue *New, Queue *Blocked, Queue *Ready, 
 int main()
 {
     int globalPid = 1;
+
+    FILE *file = fopen("output.txt", "w");
+    if (file == NULL) {
+        perror("Erro ao abrir o arquivo de saída");
+        return 1;
+    }
 
     /*
     int programs[LINE][COLUN] = { {204, 202, 3},
@@ -162,19 +194,19 @@ int main()
     enqueue(NewQueue, process);
 
     // Cabeçalho da tabela
-    printf("%-10s", "time inst");
+    fprintf(file, "%-10s", "time inst");
     for (int i = 1; i <= NUMBER_PROCESS; i++) 
     {
         char label[16];
         sprintf(label, "proc%d", i);
-        printf("%-15s", label);
+        fprintf(file, "%-15s", label);
     }
-    printf("\n");
+    fprintf(file, "\n");
 
     while (time < TIME_LIMITE) 
     {
         time++;
-        printProcess(processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
+        printProcess(file, processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
 
         scheduler(BloquedQueue, ReadyQueue, READY);
         scheduler(NewQueue, ReadyQueue, READY);
@@ -238,7 +270,20 @@ int main()
                 processor->timeCpu += 1;
             }
         }
+        if (isEmpty(NewQueue) && isEmpty(BloquedQueue) && isEmpty(ReadyQueue) && processor == NULL)
+            break;
+    }
+    deleteQueue(ReadyQueue);
+    deleteQueue(ExitQueue);
+    deleteQueue(BloquedQueue);
+    deleteQueue(NewQueue);
+
+    if(processor != NULL)
+    {
+        processor->status = EXIT;
+        killProcess(processor);
     }
 
+    fclose(file);
     return 0;
 }
