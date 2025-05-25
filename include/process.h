@@ -3,7 +3,6 @@
 
 #define LINE 11
 #define COLUN 20
-#define LEN 5
 
 typedef enum { INVALID_NUMBER,  SUCESS, NO_SPACE, INVALID_CALL } Signal;
 typedef enum { NEW, READY, RUNNING, BLOCKED, EXIT } Status;
@@ -18,11 +17,9 @@ typedef struct{
 } Process;    
 
 
-Process *forks(int programs[], int *pid, int time);
+Process *exec(int programs[], int pid, int time);
 void error_code(Signal flag);
 void killProcess(Process *process);
-char *getStatus(Status status);
-//void print_process(Queue *New, Queue *Bloqued, Queue *Ready, Process *processor);
-
+const char *getStatus(Status status);
 
 #endif

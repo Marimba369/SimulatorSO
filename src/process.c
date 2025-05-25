@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 /*
     message and error status 
 */
@@ -30,7 +31,7 @@ void error_code(Signal flag)
 /*
     create process, this is a call 
 */
-Process *forks(int context[], int *pid, int time)
+Process *exec(int context[], int pid, int time)
 {
     Process *process = (Process *)malloc(sizeof(Process));
 
@@ -42,12 +43,11 @@ Process *forks(int context[], int *pid, int time)
 
     memcpy(process->context, context, COLUN * sizeof(int)); 
     process->programCounter = 0; // pc of the process
-    process->pid = *pid; // pid of the process
+    process->pid = pid; // pid of the process
     process->timeEnqueue = time + 2; // time with process stay in any queue, this is generics
     process->timeCpu = 1; // this time increment while process stay in the cpu
     process->status = NEW; 
 
-    (*pid) += 1; // pid global increment
     return process;
 }
 
@@ -82,8 +82,7 @@ void system_call(char call)
 
 /*
 */
-
-char *getStatus(Status status) 
+const char *getStatus(Status status) 
 {    
     switch (status) 
     {

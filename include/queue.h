@@ -2,7 +2,7 @@
 #define QUEUE_H
 
 #include <stdlib.h>
-#include "process.h"
+#include <stdbool.h>
 
 // Queue Node structure
 typedef struct QueueNode {
@@ -21,7 +21,7 @@ typedef struct {
 Queue* createQueue();
 void enqueue(Queue *queue, void *data);
 void* dequeue(Queue *queue);
-int isEmpty(Queue *queue);
+bool isEmpty(Queue *queue);
 size_t queueSize(Queue *queue);
 void deleteQueue(Queue *queue);
 

@@ -20,7 +20,3 @@ gcc -Wall -Wextra -std=c11 -o "$BIN_DIR/$EXECUTAVEL" \
 
 # Mensagem de sucesso
 echo "✅ Compilação bem-sucedida."
-
-# Executar o programa
-echo "🚀 Executando o programa..."
-"./$BIN_DIR/$EXECUTAVEL"

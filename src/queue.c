@@ -60,7 +60,7 @@ void* dequeue(Queue *queue) {
 /**
  * Checks if the queue is empty.
  */
-int isEmpty(Queue *queue) {
+bool isEmpty(Queue *queue) {
     return queue->front == NULL;
 }
 
