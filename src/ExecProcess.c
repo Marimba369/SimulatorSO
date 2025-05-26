@@ -226,18 +226,19 @@ int main()
         // Schedule processes from Blocked, New, and Exit queues
         scheduler(BloquedQueue, ReadyQueue, READY); // Blocked -> Ready
         scheduler(NewQueue, ReadyQueue, READY);     // New -> Ready
-        scheduler(ExitQueue, NULL, EXIT);           // Exit queue processes are killed (NULL for Ready is fine here)
+        scheduler(ExitQueue, NULL, EXIT);           // Exit queue processes are killed (NULL for Ready is fine here)    
 
         // Check if there are any active processes left in the system
         if (isEmpty(NewQueue) && isEmpty(BloquedQueue) && isEmpty(ReadyQueue) && processor == NULL && isEmpty(ExitQueue))
             break; // All processes are finished
 
         // If no process is currently running on the CPU, try to dispatch one from ReadyQueue
-        if (processor == NULL) 
+        if (processor == NULL)
         {
             processor = (Process *)dequeue(ReadyQueue);
             if (processor != NULL) {
                 processor->status = RUNNING;
+                processor->timeCpu = 0;
                 // timeCpu is already 0 when it enters ReadyQueue via scheduler/dispatcher
             }
         }
@@ -306,7 +307,6 @@ int main()
                 }
             }
         }
-
         // Print the status of all processes for the current time step
         printProcess(file, processor, NewQueue, BloquedQueue, ReadyQueue, ExitQueue);
         fflush(file);
