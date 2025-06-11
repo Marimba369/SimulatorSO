@@ -1,6 +1,6 @@
 # Simulador de Sistema Operativo
 
-Este repositorio mostra a simulação de processos dentro de uma sistema operativo
+Simulador de Processos dentro de um sistema operativo
 
 ## 🚀 Começando
 
